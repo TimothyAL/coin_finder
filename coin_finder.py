@@ -97,16 +97,20 @@ def game_loop(matrix):
                 if end_game != "1":
                     raise GameEndingException
     except GameEndingException:
-        print_location(matrix, current_location)
-        print(f'You landed on a \"#\" or ended the game you earned {points} points')
-        print("thanks for playing")
+        try:
+            print_location(matrix, current_location)
+        except IndexError:
+            pass
+        finally:
+            print(f'You landed on a \"#\" or ended the game you earned {points} points')
+            print("thanks for playing")
 
 def setup_game(max_x: int=15, max_y: int=20):
     matrix = build_matrix(max_x, max_y)
     game_loop(matrix)
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        setup_game(x=sys.argv[0], y=sys.argv[1])
+    if len(sys.argv) == 3 and sys.argv[1].isnumeric() and sys.argv[2].isnumeric():
+        setup_game(max_x=int(sys.argv[1]), max_y=int(sys.argv[2]))
     else:
         setup_game()
